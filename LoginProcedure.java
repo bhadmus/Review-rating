@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-
+//A simple class to login to the site
 public class LoginProcedure {
     WebDriver driver ;
 
@@ -30,12 +30,12 @@ public class LoginProcedure {
     WebElement email = driver.findElement(By.xpath("/html/body/main/div/form/div/div[1]/input"));
     WebElement password = driver.findElement(By.xpath("/html/body/main/div/form/div/div[2]/input"));
     email.clear();
-    email.sendKeys("ademolabhadmus@hotmail.com");
+    email.sendKeys("a********s@hotmail.com");
 
 
 
     password.clear();
-    password.sendKeys("Qwerty123@");
+    password.sendKeys("*********");
 
     WebElement login_button = driver.findElement(By.xpath("/html/body/main/div/form/div/div[3]/button"));
     login_button.click();
