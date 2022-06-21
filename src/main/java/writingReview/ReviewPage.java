@@ -35,37 +35,56 @@ public class ReviewPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(ele.loginTab)));
         driver.findElement(By.cssSelector(ele.loginTab)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(ele.emailField)));
-        driver.findElement(By.cssSelector(ele.emailField)).sendKeys(userName);
-        driver.findElement(By.cssSelector(ele.passwordField)).sendKeys(password);
+        this.waitAndType(ele.emailField, userName);
+        this.waitAndType(ele.passwordField, password);
         driver.findElement(By.cssSelector(ele.loginButton)).click();
 
     }
 
-    public void scrollElement(WebElement element){
+    private void scrollElement(WebElement element){
         JavascriptExecutor jav = (JavascriptExecutor) driver;
         jav.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    private void waitAndType(String field, String text){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(field)));
+        driver.findElement(By.cssSelector(field)).sendKeys(text);
+
+    }
+
+    private void hoverOverElement(String element){
+        WebElement locatedElement = driver.findElement(By.cssSelector(element));
+        action.moveToElement(locatedElement).perform();
+
+    }
+
+    private void forceAClick(String element){
+        WebElement locatedElement = driver.findElement(By.cssSelector(element));
+        action.moveToElement(locatedElement).click().perform();
+
+    }
+
+    private void waitAndClick(String element){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(element)));
+        driver.findElement(By.cssSelector(element)).click();
+
     }
 
     public void writeReview() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(ele.companyLists)));
         WebElement tab = driver.findElement(By.cssSelector(ele.companyLists));
         action.moveToElement(tab).perform();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(ele.financeAdvisor)));
-        driver.findElement(By.cssSelector(ele.financeAdvisor)).click();
+        this.waitAndClick(ele.financeAdvisor);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(ele.mattTobben)));
         WebElement card = driver.findElement(By.cssSelector(ele.gregoryAlan));
         this.scrollElement(card);
         Assert.assertEquals(card.getText(), ele.getGregoryAlan);
-        WebElement fourStar = driver.findElement(By.cssSelector(ele.fourStar));
-        WebElement fiveStar = driver.findElement(By.cssSelector(ele.fiveStar));
-        action.moveToElement(fourStar).perform();
-        action.moveToElement(fiveStar).perform();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(ele.writeAReview)));
-        driver.findElement(By.cssSelector(ele.writeAReview)).click();
+        this.hoverOverElement(ele.fourStar);
+        this.hoverOverElement(ele.fiveStar);
+        this.waitAndClick(ele.writeAReview);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(ele.setFiveStar)));
-        WebElement rating = driver.findElement(By.cssSelector(ele.setFiveStar));
-        action.moveToElement(rating).click().perform();
-        driver.findElement(By.cssSelector(ele.reviewComment)).sendKeys(ele.getReviewComment);
+        this.forceAClick(ele.setFiveStar);
+        this.waitAndType(ele.reviewComment, ele.getReviewComment);
         String wordCount = driver.findElement(By.cssSelector(ele.reviewCount)).getText();
         boolean counter = Integer.parseInt(wordCount) > 200;
         Assert.assertTrue(counter);
